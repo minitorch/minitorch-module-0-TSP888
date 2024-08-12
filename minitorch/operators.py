@@ -62,13 +62,12 @@ def sigmoid(x: float) -> float:
 
     for stability.
     """
-    if x>=0.0:
-        z=math.e**-x
-        return 1.0/(1.0+z)
+    if x >= 0.0:
+        z = math.e**-x
+        return 1.0 / (1.0 + z)
     else:
-        z=math.e**x
-        return z/(1.0+z)
-
+        z = math.e**x
+        return z / (1.0 + z)
 
 
 def relu(x: float) -> float:
@@ -96,7 +95,7 @@ def exp(x: float) -> float:
 
 def log_back(x: float, d: float) -> float:
     r"If $f = log$ as above, compute $d \times f'(x)$"
-    return d/x
+    return d / x
 
 
 def inv(x: float) -> float:
@@ -106,10 +105,11 @@ def inv(x: float) -> float:
 
 def inv_back(x: float, d: float) -> float:
     r"If $f(x) = 1/x$ compute $d \times f'(x)$"
-    return -d/(x**2)
+    return -d / (x**2)
+
 
 def relu_back(x: float, d: float) -> float:
-    if x>0:
+    if x > 0:
         return d
     else:
         return 0
@@ -133,16 +133,20 @@ def map(fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[fl
         A function that takes a list, applies `fn` to each element, and returns a
          new list
     """
-    def apply(ls:Iterable[float]):
-        result=[]
+
+    def apply(ls: Iterable[float]):
+        result = []
         for element in ls:
             result.append(fn(element))
         return result
+
     return apply
+
 
 def negList(ls: Iterable[float]) -> Iterable[float]:
     "Use `map` and `neg` to negate each element in `ls`"
     return map(neg)(ls)
+
 
 def zipWith(
     fn: Callable[[float, float], float]
@@ -160,16 +164,20 @@ def zipWith(
          applying fn(x, y) on each pair of elements.
 
     """
-    def apply(list1: Iterable[float], list2:Iterable[float] ):
-        result=[]
-        for one,two in zip(list1,list2):
-            result.append(fn(one,two))
+
+    def apply(list1: Iterable[float], list2: Iterable[float]):
+        result = []
+        for one, two in zip(list1, list2):
+            result.append(fn(one, two))
         return result
+
     return apply
+
 
 def addLists(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
     "Add the elements of `ls1` and `ls2` using `zipWith` and `add`"
-    return zipWith(add)(ls1,ls2)
+    return zipWith(add)(ls1, ls2)
+
 
 def reduce(
     fn: Callable[[float, float], float], start: float
@@ -186,17 +194,21 @@ def reduce(
          $x_1 \ldots x_n$ and computes the reduction :math:`fn(x_3, fn(x_2,
          fn(x_1, x_0)))`
     """
-    def apply(ls:Iterable[float]):
-        total=start
+
+    def apply(ls: Iterable[float]):
+        total = start
         for element in ls:
-            total=fn(total,element)
+            total = fn(total, element)
         return total
+
     return apply
+
 
 def sum(ls: Iterable[float]) -> float:
     "Sum up a list using `reduce` and `add`."
-    return reduce(add,0)(ls)
+    return reduce(add, 0)(ls)
+
 
 def prod(ls: Iterable[float]) -> float:
     "Product of a list using `reduce` and `mul`."
-    return reduce(mul,1)(ls)
+    return reduce(mul, 1)(ls)
